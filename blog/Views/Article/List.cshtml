@@ -1,0 +1,35 @@
+﻿@model List<blog.Models.Article>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var article in Model)
+        {
+            <div class="col-sm-6">
+                <article>
+                    <header>
+                        <div class="overflow-row-1 ellipsis">
+                            <h2>
+                                @Html.ActionLink(@article.Title, "Details", "Article",
+                       new { @id = article.Id }, null)
+                            </h2>
+                        </div>
+                    </header>
+
+                    <div class="overflow ellipsis" contenteditable="false">
+                        @Html.Raw(@article.Content)
+                    </div>
+                </article>
+
+                <footer class="pull-left">
+                    <small class="author">
+                        <a href="~/Article/List/@article.Author.Id"><i>#Author [@article.Author.FullName]</i></a>
+                    </small>
+                </footer>
+            </div>
+        }
+    </div>
+</div>

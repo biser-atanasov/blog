@@ -1,0 +1,38 @@
+﻿@model blog.Models.Article
+
+@{
+    ViewBag.Title = "Create";
+}
+<h2>@ViewBag.Title Article</h2><br />
+
+@using (Html.BeginForm("Create", "Article", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+
+    //NicEditor JS
+    <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
+    <script type="text/javascript">
+        bkLib.onDomLoaded(function () {
+            var myNicEditor = new nicEditor();
+            myNicEditor.setPanel('myNicPanel');
+            myNicEditor.addInstance('myInstance2');
+        });
+    </script>
+
+    <div id="myNicPanel" style="width: auto;"></div>
+
+    <h4>Title</h4>
+    @Html.TextBoxFor(m => m.Title, new { @id = "myInstance1", @rows = "1", @class = "form-control" })
+
+    <h4>Content</h4>
+    @Html.TextAreaFor(m => m.Content, new { @id = "myInstance2", @rows = "6", @class = "form-control" })
+
+    <br />
+    <p>
+        @Html.ActionLink("Cancel", "Index", "Article", null, new { @class = "btn btn-default" })
+        <input type="submit" value="Create" class="btn btn-success" />
+    </p>
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+}

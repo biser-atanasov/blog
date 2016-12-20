@@ -1,0 +1,24 @@
+﻿@model blog.Models.Article
+
+@{
+    ViewBag.Title = "Delete";
+}
+<h2>@ViewBag.Title Article</h2><br />
+
+@using (Html.BeginForm("Delete", "Article", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div>@Html.Raw(@Model.Content)</div><br />
+
+    <div class="pull-right">
+        <small class="author">#Author @Model.Author.FullName</small>
+    </div> <br />
+       
+    <p>
+        @Html.ActionLink("Cancel", "Index", "Article", null, new { @class = "btn btn-default" })
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </p>
+
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+}
