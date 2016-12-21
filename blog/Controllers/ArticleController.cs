@@ -25,13 +25,15 @@ namespace blog.Controllers
             {
                 var articles = new List<blog.Models.Article>();
 
+                //показване на всички статии
                 if (id == null)
                 {
                      articles = database.Articles
                         .Include(a => a.Author)
                         .ToList();
                 } else
-                {
+                //търсене на статии по зададен критерий
+                {   
                      articles = database.Articles
                        .Include(a => a.Author)
                        .Where(a => a.Author.Id == id)

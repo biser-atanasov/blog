@@ -11,9 +11,8 @@
     <thead>
         <tr>
             <th>ID</th>
-
+            <th>Name</th>
             <th>Email</th>
-
             <th>Actions</th>
         </tr>
     </thead>
@@ -33,14 +32,13 @@
             }
 
             <td>@user.Id</td>
+            <td>@user.FullName</td>
             <td>@user.Email</td>
 
             <td>
+                @Html.ActionLink("Edit", "Edit", "User", null, new { @id = user.Id, @class = "btn btn-success btn-xs" })
                 |
-                @Html.ActionLink("Edit", "Edit", "User", new { @id = user.Id }, null)
-                |
-                @Html.ActionLink("Delete", "Delete", "User", new { @id = user.Id }, null)
-                |
+                @Html.ActionLink("Delete", "Delete", "User", null, new { @id = user.Id, @class = "btn btn-danger btn-xs" })
             </td>
         }
     </tbody>
