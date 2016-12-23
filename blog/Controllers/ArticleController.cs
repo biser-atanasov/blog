@@ -131,6 +131,7 @@ namespace blog.Controllers
                 var аrticle = database.Articles
                     .Where(a => a.Id == id)
                     .Include(a => a.Author)
+                    .Include(a => a.CatAndTags)
                     .First();
 
                 if (!IsUserAuthorizedToEdit(аrticle))
@@ -223,7 +224,6 @@ namespace blog.Controllers
                 {
                     var article = database.Articles
                         .FirstOrDefault(a => a.Id == model.Id);
-
 
                     if (!IsUserAuthorizedToEdit(article))
                     {
