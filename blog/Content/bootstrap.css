@@ -23,8 +23,8 @@
 
 .overflow {
     width: 98%; /*100em;*/
-    height: 150px;
-    margin: 0 0 1em 0;
+    height: 260px;
+    margin: 0 0 5px 0;
     white-space: inherit;
     overflow: hidden;
     /*background-color: transparent;*/
@@ -46,6 +46,55 @@
     margin: 0 0 1em 0;
     white-space: nowrap;
     overflow: hidden;
+}
+.overflow-cattags  {
+    width: 97%; 
+    height: 26px;
+    margin: 10px 0 1px 0;
+    white-space: inherit;
+    overflow: hidden;
+    transition: width 1s, height 1s;
+}
+
+.overflow-cattags:hover {
+    width: 98%;
+    height: auto;
+}
+
+.button-ripple {
+    position: fixed;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    color: #3498db;
+    padding-left: 18%;
+    width: auto;
+    text-align: center;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.button-ripple:after {
+    content: "";
+    background: #90EE90;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px!important;
+    margin-top: -120%;
+    opacity: 0;
+    transition: all 0.8s
+}
+
+.button-ripple:active:after {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s
 }
 
 .clip {
@@ -3250,8 +3299,8 @@ fieldset[disabled] .btn-primary.focus {
 }
 .btn-success {
   color: #ffffff;
-  background-color: #18bc9c;
-  border-color: #18bc9c;
+  background-color: rgba(10, 75, 62, 0.74);
+  border-color: rgba(122, 172, 146, 0.64);
 }
 .btn-success:focus,
 .btn-success.focus {

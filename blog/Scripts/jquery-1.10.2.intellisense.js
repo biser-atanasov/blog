@@ -42,7 +42,7 @@ intellisense.annotate(jQuery, {
   'ajaxTransport': function() {
     /// <signature>
     ///   <summary>Creates an object that handles the actual transmission of Ajax data.</summary>
-    ///   <param name="dataType" type="String">A string identifying the data type to use</param>
+    ///   <param name="dataType" type="String">A Guid Identifying the data type to use</param>
     ///   <param name="handler(options, originalOptions, jqXHR)" type="Function">A handler to return the new transport object to use with the data type provided in the first argument.</param>
     /// </signature>
   },

@@ -1,4 +1,4 @@
-﻿@model blog.Models.Article
+﻿@model blog.Models.ArticleViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -9,7 +9,6 @@
 {
     @Html.AntiForgeryToken()
 
-    //NicEditor JS
     <script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>
     <script type="text/javascript">
         bkLib.onDomLoaded(function () {
@@ -22,10 +21,13 @@
     <div id="myNicPanel" style="width: auto;"></div>
 
     <h4>Title</h4>
-    @Html.TextBoxFor(m => m.Title, new { @id = "myInstance1", @rows = "1", @class = "form-control" })
+    @Html.TextBoxFor(m => m.Title, new { @id = "myInstance1", @class = "form-control" })
 
     <h4>Content</h4>
     @Html.TextAreaFor(m => m.Content, new { @id = "myInstance2", @rows = "6", @class = "form-control" })
+
+    <h4>Themes and tags</h4>
+    @Html.TextBoxFor(m => m.CatAndTags, new { @id = "myInstance3", @class = "form-control" })
 
     <br />
     <p>
@@ -34,5 +36,4 @@
     </p>
 
     @Html.ValidationSummary("", new { @class = "text-danger" })
-
 }

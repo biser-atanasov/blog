@@ -111,7 +111,7 @@ namespace blog.Controllers
         }
 
         //Get User/Delete
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {

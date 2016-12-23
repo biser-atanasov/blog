@@ -15,7 +15,7 @@ namespace blog.Models
 
         public virtual IDbSet<Article> Articles { get; set; }
 
-        public virtual IDbSet<Category> Categories { get; set; }
+        public virtual IDbSet<CatAndTag> CatAndTags { get; set; }
 
         public static BlogDbContext Create()
         {

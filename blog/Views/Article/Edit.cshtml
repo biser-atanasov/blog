@@ -1,14 +1,11 @@
 ﻿@model blog.Models.ArticleViewModel
-
 @{
     ViewBag.Title = "Edit";
 }
-
 <h2>@ViewBag.Title</h2><br />
 
 @using (Html.BeginForm("Edit", "Article", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
 
@@ -30,6 +27,9 @@
     
     <h4>Content</h4>
         @Html.TextAreaFor(m => m.Content, new { @id = "myInstance2", @class = "form-control" })
+
+    <h4>Themes and tags</h4>
+    @Html.TextBoxFor(m => m.CatAndTags, new { @id = "myInstance3", @class = "form-control" })
 
     <br />
     <p>

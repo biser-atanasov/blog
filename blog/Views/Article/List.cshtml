@@ -1,6 +1,4 @@
-﻿@*LIST All or Specific Articles*@
-
-@model List<blog.Models.Article>
+﻿@model List<blog.Models.Article>
 
 @{
     ViewBag.Title = "List";
@@ -13,6 +11,26 @@
             <div class="col-sm-6">
                 <article>
                     <header>
+                        <div class="alert-link"> 
+                            <i>
+                                <b>@article.Date.ToString("dd MMMM yyyy") </b>&emsp;
+                                #Author
+                            </i>
+                                @Html.ActionLink(@article.Author.FullName, "List", "Article",
+                                new { @id = article.Author.Id }, null)
+                                
+                               @*href="~/Article/List/@article.Author.Id"><i>#Author [@article.Author.FullName]</i>*@
+                        </div>
+
+                        <div class="overflow-cattags ellipsis">
+                            @foreach (var cattag in article.CatAndTags)
+                            {
+                                @Html.ActionLink(@cattag.Name, "List", "Article",
+                                new { @id = @cattag.Id }, new { @class = "btn btn-success btn-xs" }); 
+                                <span>&nbsp;</span>
+                            }
+                        </div>
+
                         <div class="overflow-row-1 ellipsis">
                             <h2>
                                 @Html.ActionLink(@article.Title, "Details", "Article",
@@ -25,12 +43,6 @@
                         @Html.Raw(@article.Content)
                     </div>
                 </article>
-
-                <footer class="pull-left">
-                    <small class="author">
-                        <a href="~/Article/List/@article.Author.Id"><i>#Author [@article.Author.FullName]</i></a>
-                    </small>
-                </footer>
             </div>
         }
     </div>

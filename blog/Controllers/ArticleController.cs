@@ -28,16 +28,35 @@ namespace blog.Controllers
                 //показване на всички статии
                 if (id == null)
                 {
-                     articles = database.Articles
+                    articles = database.Articles
+                       .Include(a => a.Author)
+                       .Include(a => a.CatAndTags)
+                       .ToList();
+                }
+                else
+                //търсене на статии по зададен критерий
+                {
+                    int Id = 0;
+                    var isNumber = int.TryParse(id, out Id);
+
+                    if (isNumber)
+                    {
+                        // tag or theme (number Id)
+                        articles = database.Articles
+                        .Include(a => a.CatAndTags)
+                        .Where(a=> a.CatAndTags.Any(c => c.Id==Id))
                         .Include(a => a.Author)
                         .ToList();
-                } else
-                //търсене на статии по зададен критерий
-                {   
-                     articles = database.Articles
+                    }
+                    else
+                    {
+                        //author
+                        articles = database.Articles
                        .Include(a => a.Author)
                        .Where(a => a.Author.Id == id)
+                       .Include(a => a.CatAndTags)
                        .ToList();
+                    }
                 };
 
                 return View(articles);
@@ -57,6 +76,7 @@ namespace blog.Controllers
                 var аrticle = database.Articles
                     .Where(a => a.Id == id)
                     .Include(a => a.Author)
+                    .Include(a => a.CatAndTags)
                     .First();
 
                 if (аrticle == null)
@@ -70,23 +90,24 @@ namespace blog.Controllers
 
         // GET: POST: Article/Create
         [Authorize]
-        public ActionResult Create(Article article)
+        public ActionResult Create(ArticleViewModel model)
         {
             if (ModelState.IsValid)
             {
                 using (var database = new BlogDbContext())
                 {
                     //get author id
-                    var authorId = database.Users
+                    model.AuthorId = database.Users
                         .Where(u => u.UserName == this.User.Identity.Name)
                         .First()
                         .Id;
 
-                    //set articles author
-                    article.AuthorId = authorId;
+                    var article = new Article(model);
+
+                    //set cats and tags
+                    SetAtricleCatAndTags(model, database, article);
 
                     //save articles in Db
-                    //article.Content = article.Content.Substring(0, article.Content.Length-4);
                     database.Articles.Add(article);
                     database.SaveChanges();
 
@@ -94,7 +115,7 @@ namespace blog.Controllers
                 }
             }
 
-            return View(article);
+            return View(model);
         }
 
         // GET: Article/Delete
@@ -116,6 +137,8 @@ namespace blog.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
+
+                ViewBag.CatAndTagsString = string.Join(", ", аrticle.CatAndTags.Select(t => t.Name));
 
                 if (аrticle == null)
                 {
@@ -151,7 +174,6 @@ namespace blog.Controllers
                 database.Articles.Remove(аrticle);
                 database.SaveChanges();
 
-
                 return RedirectToAction("Index");
             }
         }
@@ -167,6 +189,7 @@ namespace blog.Controllers
             using (var database = new BlogDbContext())
             {
                 var аrticle = database.Articles
+                    .Include(a => a.CatAndTags)
                     .Where(a => a.Id == id)
                     .First();
 
@@ -184,6 +207,7 @@ namespace blog.Controllers
                 model.Id = аrticle.Id;
                 model.Title = аrticle.Title;
                 model.Content = аrticle.Content;
+                model.CatAndTags = string.Join(", ", аrticle.CatAndTags.Select(a => a.Name));
 
                 return View(model);
             }
@@ -200,13 +224,17 @@ namespace blog.Controllers
                     var article = database.Articles
                         .FirstOrDefault(a => a.Id == model.Id);
 
-                    article.Title = model.Title;
-                    article.Content = model.Content;
 
                     if (!IsUserAuthorizedToEdit(article))
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                     }
+
+                    article.Title = model.Title;
+                    article.Content = model.Content;
+                    article.Date = DateTime.Now;
+
+                    SetAtricleCatAndTags(model, database, article);
 
                     database.Entry(article).State = EntityState.Modified;
                     database.SaveChanges();
@@ -218,6 +246,29 @@ namespace blog.Controllers
             return View(model);
         }
 
+        private static void SetAtricleCatAndTags(ArticleViewModel model, BlogDbContext database, Article article)
+        {
+            string[] delimiter = new string[] { ",", " " };
+            var cattags = model.CatAndTags
+                .Split(delimiter, StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => t.ToLower())
+                .Distinct();
+
+            article.CatAndTags.Clear();
+
+            foreach (var cattag in cattags)
+            {
+                CatAndTag catAndTag = database.CatAndTags.FirstOrDefault(t => t.Name.Equals(cattag));
+
+                if (catAndTag == null)
+                {
+                    catAndTag = new CatAndTag() { Name = cattag };
+                }
+
+                article.CatAndTags.Add(catAndTag);
+            }
+        }
+
         private bool IsUserAuthorizedToEdit(Article article)
         {
             bool isAdmin = this.User.IsInRole("Admin");
@@ -226,16 +277,5 @@ namespace blog.Controllers
 
             return isAdmin || isAuthor;
         }
-
-        private string Left(string value, int maxLength)
-        {
-            if (string.IsNullOrEmpty(value) || value.Length <= maxLength) return value;
-
-            value = value.Substring(0, maxLength);
-            value = value.Substring(0, value.LastIndexOf(" "));
-
-            return value;
-        }
-
     }
 }

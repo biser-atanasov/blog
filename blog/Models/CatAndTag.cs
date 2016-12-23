@@ -7,11 +7,11 @@ using System.Web;
 
 namespace blog.Models
 {
-    public class Category
+    public class CatAndTag
     {
         private ICollection<Article> articles;
 
-        private Category()
+        public CatAndTag()
         {
             this.articles = new HashSet<Article>();
         }
@@ -21,9 +21,13 @@ namespace blog.Models
 
         [Required]
         [Index(IsUnique = true)]
-        [StringLength(20)]
+        [MaxLength(20)]
         public string Name { get; set; }
 
-        public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<Article> Articles
+        {
+            get { return this.articles; }
+            set { this.articles = value; }
+        }
     }
 }
