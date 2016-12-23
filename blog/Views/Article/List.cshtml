@@ -5,45 +5,31 @@
 }
 
 <div class="container">
-    <div class="row">
+    @*<div class="row">*@
         @foreach (var article in Model)
         {
             <div class="col-sm-6">
-                <article>
-                    <header>
-                        <div class="alert-link"> 
-                            <i>
-                                <b>@article.Date.ToString("dd MMMM yyyy") </b>&emsp;
-                                #Author
-                            </i>
-                                @Html.ActionLink(@article.Author.FullName, "List", "Article",
-                                new { @id = article.Author.Id }, null)
-                                
-                               @*href="~/Article/List/@article.Author.Id"><i>#Author [@article.Author.FullName]</i>*@
-                        </div>
+                    <i> <b>@article.Date.ToString("dd MMMM yyyy") </b>&emsp;#Author </i>
+                    @Html.ActionLink(@article.Author.FullName, "List", "Article", new { @id = article.Author.Id }, null)
 
-                        <div class="overflow-cattags ellipsis">
-                            @foreach (var cattag in article.CatAndTags)
-                            {
-                                @Html.ActionLink(@cattag.Name, "List", "Article",
-                                new { @id = @cattag.Id }, new { @class = "btn btn-success btn-xs" }); 
-                                <span>&nbsp;</span>
-                            }
-                        </div>
+                <div class="overflow-cattags ellipsis">
+                    @foreach (var cattag in article.CatAndTags)
+                    {
+                        @Html.ActionLink(@cattag.Name, "List", "Article", new { @id = @cattag.Id }, new { @class = "btn btn-success btn-xs" });
+                        <span>&nbsp;</span>
+                    }
+                </div>
 
-                        <div class="overflow-row-1 ellipsis">
-                            <h2>
-                                @Html.ActionLink(@article.Title, "Details", "Article",
-                       new { @id = article.Id }, null)
-                            </h2>
-                        </div>
-                    </header>
+                <div class="overflow-title ellipsis">
+                    <h2>
+                        @Html.ActionLink(@article.Title, "Details", "Article", new { @id = article.Id }, null)
+                    </h2>
+                </div>
 
-                    <div class="overflow ellipsis" contenteditable="false">
-                        @Html.Raw(@article.Content)
-                    </div>
-                </article>
+                <div class="overflow ellipsis" >
+                    @Html.Raw(@article.Content)
+                </div>
             </div>
         }
-    </div>
+    @*</div>*@
 </div>
