@@ -9,8 +9,11 @@ using blog.Models;
 
 namespace blog.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CatAndTagController : Controller
     {
+        private BlogDbContext db = new BlogDbContext();
+
         //GET: CatAndTag
         public ActionResult Index()
         {
@@ -18,20 +21,40 @@ namespace blog.Controllers
         }
 
         // GET: CatAndTag/List
-        public ActionResult List(int? id)
+        [HttpGet]
+        public ActionResult List()
         {
+            var tags = db.CatAndTags.ToList();
 
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            using (var database = new BlogDbContext())
-            {
-                var cattags = database.CatAndTags.ToList();
-
-                return View(cattags);
-            }
+            return View(tags);
         }
+
+        // POST: CatAndTag/List
+        [HttpPost]
+        [ActionName("List")]
+        [ValidateAntiForgeryToken]
+        public ActionResult ListSaved([Bind(Include = "Id,Name")] List<CatAndTag> tags)
+        {
+            var dbTags = db.CatAndTags.ToList();
+            for (int i = 0; i < tags.Count; i++)
+            {
+                if (string.IsNullOrWhiteSpace(tags[i].Name)) db.Entry(dbTags[i]).State = EntityState.Deleted;
+                else dbTags[i].Name = tags[i].Name;
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("List");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
     }
 }

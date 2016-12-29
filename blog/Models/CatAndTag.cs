@@ -19,9 +19,9 @@ namespace blog.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
-        [Index(IsUnique = true)]
-        [MaxLength(20)]
+        //[Required]
+        //[Index(IsUnique = true)]
+        [MaxLength(100)]
         public string Name { get; set; }
 
         public virtual ICollection<Article> Articles

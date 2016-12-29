@@ -1,0 +1,26 @@
+﻿@model IList<blog.Models.CatAndTag>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Categories & Tags</h2><br />
+
+@using (@Html.BeginForm("List", "CatAndTag", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.AntiForgeryToken()
+
+    <p>
+        @Html.ActionLink("Cancel", "List", "Article", null, new { @class = "btn btn-default" })
+        <input type="submit" value="Save" class="btn btn-success" />
+    </p>
+    <br />
+    for (var i = 0; i < Model.Count; i++)
+    {
+        <div class="col-sm-2">
+            @Html.HiddenFor(x => x[i].Id)
+            @Html.TextBoxFor(x => x[i].Name, new { @class = "overflow-cattags-list ellipsis" })
+        </div>
+    }
+    <p>&nbsp;</p>
+}

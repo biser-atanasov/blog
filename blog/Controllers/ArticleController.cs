@@ -165,6 +165,7 @@ namespace blog.Controllers
                 var аrticle = database.Articles
                     .Where(a => a.Id == id)
                     .Include(a => a.Author)
+                    .Include(a=> a.CatAndTags)
                     .First();
 
                 if (аrticle == null)
@@ -248,7 +249,7 @@ namespace blog.Controllers
 
         private static void SetAtricleCatAndTags(ArticleViewModel model, BlogDbContext database, Article article)
         {
-            string[] delimiter = new string[] { ",", " " };
+            char[] delimiter = new char[] { ',', ' '};
             var cattags = model.CatAndTags
                 .Split(delimiter, StringSplitOptions.RemoveEmptyEntries)
                 .Select(t => t.ToLower())

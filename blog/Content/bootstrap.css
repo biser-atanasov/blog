@@ -21,7 +21,7 @@
 }
 
 .overflow {
-    width: 100%; /*100em;*/
+    width: 100%;
     height: 260px;
     margin: 0 0 5px 0;
     white-space: inherit;
@@ -43,7 +43,7 @@
     }
 
 .overflow-title {
-    width: 100%; 
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     transition: width 1s;
@@ -51,6 +51,27 @@
 
     .overflow-title:hover {
         background-color: rgba(52, 152, 219, 0.18);
+        white-space: nowrap;
+    }
+
+.overflow-cattags-list {
+    background-color: transparent;
+    width: 100%;
+    height:auto;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 16px;
+    font-style: oblique;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #0a4b3e;
+    margin: 0 0 6px 0;
+    border: double;
+    transition: width 1s;
+}
+
+    .overflow-cattags-list:hover {
+        width: auto;
+        background-color: transparent;
         white-space: nowrap;
     }
 
